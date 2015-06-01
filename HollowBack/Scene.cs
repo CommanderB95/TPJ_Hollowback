@@ -521,85 +521,6 @@ namespace HollowBack
                 SSV.Update(pGameTime);
                 cone.Update(pGameTime);
 
-                //Enemies Update
-                foreach (Fighter Enemies in EnemyFighter)
-                {
-                    Point ID = Enemies.Update(pGameTime);
-                    if (ID != Point.Zero) TargetID = ID;
-                    Enemies.UpdatePositionAngle(cone);
-                    if (Enemies.FireWeapon)
-                    {
-                        int i = 0;
-                        if (EnemyMissile.Count != 0) while (i < EnemyMissile.Count && EnemyMissile[i] != null) i++;
-                        Missile var = new Missile(content, this, i, new Point(0,0));
-                        EnemyMissile.Insert(i, var);
-                        EnemyMissile[i].SpawnAt(Enemies.Position);
-                        EnemyMissile[i].SetDestination(new Vector2(640, 360));
-                        Enemies.FireWeapon = false;
-                    }
-                    if (!Enemies.IsActive) EnemyFighterDump.Add(Enemies);
-                }
-                foreach (Fighter var1 in EnemyFighterDump) EnemyFighter.Remove(var1);
-                EnemyFighterDump.Clear();
-
-                foreach (Frigate Enemies in EnemyFrigate)
-                {
-                    Point ID = Enemies.Update(pGameTime);
-                    if (ID != Point.Zero) TargetID = ID;
-                    Enemies.UpdatePositionAngle(cone);
-                    if (Enemies.FireWeapon)
-                    {
-                        int i = 0;
-                        if (EnemySlug.Count != 0) while (i < EnemySlug.Count && EnemySlug[i] != null) i++;
-                        Slug var = new Slug(content, this);
-                        EnemySlug.Insert(i, var);
-                        EnemySlug[i].SpawnAt(Enemies.Position);
-                        EnemySlug[i].SetDestination(new Vector2(640, 360));
-                        Enemies.FireWeapon = false;
-                    }
-                    if (!Enemies.IsActive) EnemyFrigateDump.Add(Enemies);
-                }
-                foreach (Frigate var1 in EnemyFrigateDump) EnemyFrigate.Remove(var1);
-                EnemyFrigateDump.Clear();
-
-                foreach (Carrier Enemies in EnemyCarrier)
-                {
-                    Point ID = Enemies.Update(pGameTime);
-                    if (ID != Point.Zero) 
-                        TargetID = ID;
-                    Enemies.UpdatePositionAngle(cone);
-                    if (Enemies.FireWeapon)
-                    {
-                        AddFigther(content, Enemies.Position, new Vector2(640, 360));
-                        Enemies.FireWeapon = false;
-                    }
-                    if (!Enemies.IsActive) EnemyCarrierDump.Add(Enemies);
-                }
-                foreach (Carrier var1 in EnemyCarrierDump) EnemyCarrier.Remove(var1);
-                EnemyCarrierDump.Clear();
-
-                foreach (Dreadnought Enemies in EnemyDreadnought)
-                {
-                    Point ID = Enemies.Update(pGameTime);
-                    if (ID != Point.Zero) 
-                        TargetID = ID;
-                    Enemies.UpdatePositionAngle(cone);
-                    if (Enemies.FireWeapon)
-                    {
-                        int i = 0;
-                        if (EnemyCannon.Count != 0) while (i < EnemyCannon.Count && EnemyCannon[i] != null) i++;
-                        Cannon var = new Cannon(content, this, new Point(0,0), 10);
-                        EnemyCannon.Insert(i, var);
-                        EnemyCannon[i].SpawnAt(Enemies.Position);
-                        Enemies.FireWeapon = false;
-                    }
-                    if (!Enemies.IsActive) EnemyDreadnoughtDump.Add(Enemies);
-                }
-                foreach (Dreadnought var1 in EnemyDreadnoughtDump) EnemyDreadnought.Remove(var1);
-                EnemyDreadnoughtDump.Clear();
-
-                //endEnemies Update
-
                 //Weapons Update
 
                 foreach (Missile Missile in EnemyMissile)
@@ -620,16 +541,16 @@ namespace HollowBack
                         enemyMissileDump.Add(Missile);
                     }
                 }
-                foreach (Missile var1 in EnemyMissileDump) EnemyMissile.Remove(var1);
-                EnemyMissileDump.Clear();
+                //foreach (Missile var1 in EnemyMissileDump) EnemyMissile.Remove(var1);
+                //EnemyMissileDump.Clear();
 
                 foreach (Laser Lsr in Lasers)
                 {
                     Lsr.Update();
                     if (Lsr.Timer >= Lsr.Duration) LaserDump.Add(Lsr);
                 }
-                foreach (Laser var1 in LaserDump) Lasers.Remove(var1);
-                LaserDump.Clear();
+                //foreach (Laser var1 in LaserDump) Lasers.Remove(var1);
+                //LaserDump.Clear();
 
                 foreach (Slug Slug in EnemySlug)
                 {
@@ -648,8 +569,8 @@ namespace HollowBack
                         enemySlugDump.Add(Slug);
                     }
                 }
-                foreach (Slug var1 in EnemySlugDump) EnemySlug.Remove(var1);
-                EnemySlugDump.Clear();
+                //foreach (Slug var1 in EnemySlugDump) EnemySlug.Remove(var1);
+                //EnemySlugDump.Clear();
 
                 foreach (Cannon Cannon in EnemyCannon)
                 {
@@ -658,10 +579,101 @@ namespace HollowBack
 
                     //Add destroy here.
                 }
-                foreach (Cannon var1 in EnemyCannonDump) EnemyCannon.Remove(var1);
-                EnemyCannonDump.Clear();
+                //foreach (Cannon var1 in EnemyCannonDump) EnemyCannon.Remove(var1);
+                //EnemyCannonDump.Clear();
 
                 //endWeapons Update
+
+                //Enemies Update
+                foreach (Fighter Enemies in EnemyFighter)
+                {
+                    if (Enemies.IsActive)
+                    {
+                        Point ID = Enemies.Update(pGameTime);
+                        if (ID != Point.Zero) TargetID = ID;
+                        Enemies.UpdatePositionAngle(cone);
+                        if (Enemies.FireWeapon)
+                        {
+                            int i = 0;
+                            if (EnemyMissile.Count != 0) while (i < EnemyMissile.Count && EnemyMissile[i] != null) i++;
+                            Missile var = new Missile(content, this, i, new Point(0, 0));
+                            EnemyMissile.Insert(i, var);
+                            EnemyMissile[i].SpawnAt(Enemies.Position);
+                            EnemyMissile[i].SetDestination(new Vector2(640, 360));
+                            Enemies.FireWeapon = false;
+                        }
+                    }
+                    //if (!Enemies.IsActive) EnemyFighterDump.Add(Enemies);
+                }
+                //foreach (Fighter var1 in EnemyFighterDump) EnemyFighter.Remove(var1);
+                //EnemyFighterDump.Clear();
+
+                foreach (Frigate Enemies in EnemyFrigate)
+                {
+                    if (Enemies.IsActive)
+                    {
+                        Point ID = Enemies.Update(pGameTime);
+                        if (ID != Point.Zero) TargetID = ID;
+                        Enemies.UpdatePositionAngle(cone);
+                        if (Enemies.FireWeapon)
+                        {
+                            int i = 0;
+                            if (EnemySlug.Count != 0) while (i < EnemySlug.Count && EnemySlug[i] != null) i++;
+                            Slug var = new Slug(content, this, i, new Point(0,0));
+                            EnemySlug.Insert(i, var);
+                            EnemySlug[i].SpawnAt(Enemies.Position);
+                            EnemySlug[i].SetDestination(new Vector2(640, 360));
+                            Enemies.FireWeapon = false;
+                        }
+                    }
+                    //if (!Enemies.IsActive) EnemyFrigateDump.Add(Enemies);
+                }
+                //foreach (Frigate var1 in EnemyFrigateDump) EnemyFrigate.Remove(var1);
+                //EnemyFrigateDump.Clear();
+
+                foreach (Carrier Enemies in EnemyCarrier)
+                {
+                    if (Enemies.IsActive)
+                    {
+                        Point ID = Enemies.Update(pGameTime);
+                        if (ID != Point.Zero)
+                            TargetID = ID;
+                        Enemies.UpdatePositionAngle(cone);
+                        if (Enemies.FireWeapon)
+                        {
+                            AddFigther(content, Enemies.Position, new Vector2(640, 360));
+                            Enemies.FireWeapon = false;
+                        }
+                    }
+                    //if (!Enemies.IsActive) EnemyCarrierDump.Add(Enemies);
+                }
+                //foreach (Carrier var1 in EnemyCarrierDump) EnemyCarrier.Remove(var1);
+                //EnemyCarrierDump.Clear();
+
+                foreach (Dreadnought Enemies in EnemyDreadnought)
+                {
+                    if (Enemies.IsActive)
+                    {
+                        Point ID = Enemies.Update(pGameTime);
+                        if (ID != Point.Zero)
+                            TargetID = ID;
+                        Enemies.UpdatePositionAngle(cone);
+                        if (Enemies.FireWeapon)
+                        {
+                            int i = 0;
+                            if (EnemyCannon.Count != 0) while (i < EnemyCannon.Count && EnemyCannon[i] != null) i++;
+                            Cannon var = new Cannon(content, this, new Point(0, 0), 10);
+                            EnemyCannon.Insert(i, var);
+                            EnemyCannon[i].SpawnAt(Enemies.Position);
+                            Enemies.FireWeapon = false;
+                        }
+                    }
+                    //if (!Enemies.IsActive) EnemyDreadnoughtDump.Add(Enemies);
+                }
+                //foreach (Dreadnought var1 in EnemyDreadnoughtDump) EnemyDreadnought.Remove(var1);
+                //EnemyDreadnoughtDump.Clear();
+
+                //endEnemies Update
 
                 ladar.Update(pGameTime, cone.Lockin, cone.stopAngle_M);
 
@@ -712,10 +724,11 @@ namespace HollowBack
                     {
                         int i = 0;
                         if (EnemySlug.Count != 0) while (i < EnemySlug.Count && EnemySlug[i] != null) i++;
-                        Slug var = new Slug(content, this);
+                        Slug var = new Slug(content, this, i, TargetID);
                         EnemySlug.Insert(i, var);
                         EnemySlug[i].SpawnAt(new Vector2(640, 360));
                         EnemySlug[i].SetDestination(GetPositionByID(TargetID));
+                        EnemySlug[i].Friendly = true;
                         PlayerWpn[2].FireWeapon();
                     }
                 }
@@ -765,12 +778,12 @@ namespace HollowBack
 
         private void Gameplay_Draw(SpriteBatch pSpriteBatch)
         {
-            foreach (Fighter var1 in EnemyFighter) var1.Draw(SpriteBatch);
-            foreach (Frigate var1 in EnemyFrigate) var1.Draw(SpriteBatch);
-            foreach (Carrier var1 in EnemyCarrier) var1.Draw(SpriteBatch);
-            foreach (Dreadnought var1 in EnemyDreadnought) { var1.Draw(SpriteBatch); var1.DrawCountDown(SpriteBatch); }
-            foreach (Missile var1 in EnemyMissile) var1.Draw(SpriteBatch);
-            foreach (Slug var1 in EnemySlug) var1.Draw(SpriteBatch);
+            foreach (Fighter var1 in EnemyFighter) if (var1.IsActive) var1.Draw(SpriteBatch);
+            foreach (Frigate var1 in EnemyFrigate) if (var1.IsActive) var1.Draw(SpriteBatch);
+            foreach (Carrier var1 in EnemyCarrier) if (var1.IsActive) var1.Draw(SpriteBatch);
+            foreach (Dreadnought var1 in EnemyDreadnought) if (var1.IsActive) { var1.Draw(SpriteBatch); var1.DrawCountDown(SpriteBatch); }
+            foreach (Missile var1 in EnemyMissile) if (!var1.Destroy) var1.Draw(SpriteBatch);
+            foreach (Slug var1 in EnemySlug) if (!var1.Destroy) var1.Draw(SpriteBatch);
             foreach (Cannon var1 in EnemyCannon) if(var1.IsActive) var1.Draw(SpriteBatch);
             foreach (Laser var1 in Lasers) if (var1.IsActive) var1.Draw(SpriteBatch);
             cone.Draw(spriteBatch);
@@ -881,9 +894,6 @@ namespace HollowBack
             {
                 Enemies.isSelected = false;
             }
-        //    }
-        //private List<Missile> enemyMissile;
-        //private List<Slug> enemySlug;
         }
 
         public Vector2 GetPositionByID(Point pID)

@@ -28,14 +28,16 @@ namespace HollowBack
         }
 
 
-        public Slug(ContentManager pContent, Scene pScene)
+        public Slug(ContentManager pContent, Scene pScene, int pID, Point pTargetID)
             : base(pContent, "Slug", pScene)
         {
             IsUnknown = false;
             IsVisible = true;
             IsActive = false;
+            Health = 1;
 
-            ID = new Point(6, 0);
+            ID = new Point(6, pID);
+            TargetID = pTargetID;
 
             this.Scale = new Vector2(0.3f, 0.3f);
 
