@@ -18,6 +18,7 @@ namespace HollowBack
 
         #endregion
 
+
         #region Properties
 
         public float Cooldown
